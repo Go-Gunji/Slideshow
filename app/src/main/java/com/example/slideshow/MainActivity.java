@@ -2,6 +2,7 @@ package com.example.slideshow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     int mPosition = 0;
+    MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +62,23 @@ public class MainActivity extends AppCompatActivity {
                 movePosition(1);
             }
         });
+
+        mMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.getdown);
+        mMediaPlayer.setLooping(true);
     }
 
-    private void movePosition(int move) {
+    // 画面が表示されたときに呼ばれるメソッド
+    protected void onResume() {
+        super.onResume();
+        mMediaPlayer.start();
+    }
+    // 画面が閉じられたときに呼ばれるメソッド
+    protected void onPause() {
+        super.onPause();
+        mMediaPlayer.stop();
+    }
+
+ private void movePosition(int move) {
         mPosition = mPosition + move;
         if (mPosition >= mImageResources.length) {
             mPosition = 0;
